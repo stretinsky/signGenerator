@@ -1,0 +1,9 @@
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\bin\Debug\GermanCarNumber.exe.config
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\bin\Debug\GermanCarNumber.exe
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\bin\Debug\GermanCarNumber.pdb
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.Properties.Resources.resources
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.csproj.GenerateResource.cache
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.exe
+C:\Users\User\source\repos\signGenerator\GermanCarNumber\obj\Debug\GermanCarNumber.pdb
