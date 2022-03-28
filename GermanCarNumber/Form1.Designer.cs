@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -39,10 +40,10 @@
             // pictureBox1
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox1.Image = global::GermanCarNumber.Properties.Resources.Shablon_1;
-            this.pictureBox1.Location = new System.Drawing.Point(126, 99);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(76, 106);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(554, 176);
+            this.pictureBox1.Size = new System.Drawing.Size(662, 152);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -65,11 +66,12 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(237, 131);
+            this.label1.Location = new System.Drawing.Point(189, 140);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(12, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "A";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label1.UseCompatibleTextRendering = true;
             // 
             // label2
@@ -77,11 +79,12 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(392, 131);
+            this.label2.Location = new System.Drawing.Point(367, 140);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(12, 17);
             this.label2.TabIndex = 3;
             this.label2.Text = "A";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label2.UseCompatibleTextRendering = true;
             // 
             // label3
@@ -89,11 +92,12 @@
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(595, 131);
+            this.label3.Location = new System.Drawing.Point(504, 140);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(10, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "1";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label3.UseCompatibleTextRendering = true;
             // 
             // Form1

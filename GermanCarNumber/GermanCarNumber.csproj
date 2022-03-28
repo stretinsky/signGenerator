@@ -85,5 +85,8 @@
   <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Shablon 1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -25,8 +25,8 @@ namespace GermanCarNumber
             {
                 sequence.Append(alphabet[rand.Next(alphabet.Length)]);
             }
-            sequence.Append(" ");
-            countOfFirstSymbols = rand.Next(1, 11 - sequence.Length);
+            sequence.Append($" {rand.Next(1, 10)}");
+            countOfFirstSymbols = sequence.Length.Equals(8) ? rand.Next(1, 3) : rand.Next(1, 4);
             for (int i = 0; i < countOfFirstSymbols; i++)
             {
                 sequence.Append(rand.Next(10));

@@ -35,9 +35,9 @@ namespace GermanCarNumber
             // pass the font to the font collection
             pfc.AddMemoryFont(data, fontLength);
 
-            label1.Font = new Font(pfc.Families[0], 64);
-            label2.Font = new Font(pfc.Families[0], 64);
-            label3.Font = new Font(pfc.Families[0], 64);
+            label1.Font = new Font(pfc.Families[0], 57);
+            label2.Font = new Font(pfc.Families[0], 57);
+            label3.Font = new Font(pfc.Families[0], 57);
         }
 
         private void GenerateAndShowNumber(object sender, EventArgs e)
