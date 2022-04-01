@@ -71,6 +71,36 @@ namespace GermanCarNumber.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на A:Augsburg (Bayern)
+        ///AA:Aalen Ostalbkreis (BaWü)
+        ///AB:Aschaffenburg (Bayern)
+        ///ABG:Altenburger Land (Thür)
+        ///AC:Aachen (NrWe)
+        ///AE:Auerbach (Sachs-)
+        ///AIC:Aichach-Friedberg (Bayern)
+        ///AK:Altenkirchen/Westerwald (RhPf)
+        ///AM:Amberg (Bayern)
+        ///AN:Ansbach (Bayern)
+        ///ANA:Annaberg (Sachs)
+        ///ANG:Angermünde (Brandenburg)
+        ///ANK:Anklam (MeVo)
+        ///AÖ:Altötting (Bayern)
+        ///AP:Apolda - Weimarer Land (Thür)
+        ///APD:Apolda (Thür)
+        ///ARN:Arnstadt (Thür)
+        ///ART:Artern (Thür)
+        ///AS:Amberg-Sulzbach (Bayern)
+        ///ASL:Aschersleben (SaAn)
+        ///ASZ:Aue-Schwarzenberg (Sachs)
+        ///AT:Alte [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string regions {
+            get {
+                return ResourceManager.GetString("regions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Shablon_1 {

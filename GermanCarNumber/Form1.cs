@@ -40,9 +40,17 @@ namespace GermanCarNumber
             label3.Font = new Font(pfc.Families[0], 57);
         }
 
-        private void GenerateAndShowNumber(object sender, EventArgs e)
+        private void GenerateAndShowRandomNumber(object sender, EventArgs e)
         {
             string[] labelText = sequenceGenerator.CreateRandomNumber().Split(' ');
+            label1.Text = labelText[0];
+            label2.Text = labelText[1];
+            label3.Text = labelText[2];
+        }
+
+        private void GenerateNextNumber(object sender, EventArgs e)
+        {
+            string[] labelText = sequenceGenerator.CreateNextNumber().Split(' ');
             label1.Text = labelText[0];
             label2.Text = labelText[1];
             label3.Text = labelText[2];
