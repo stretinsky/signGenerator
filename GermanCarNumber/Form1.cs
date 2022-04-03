@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GermanCarNumber
@@ -23,6 +19,7 @@ namespace GermanCarNumber
             InitCustomLabelFont();
             InitComboBox();
         }
+
         public void InitCustomLabelFont()
         {
             //Select your font from the resources.
@@ -37,9 +34,9 @@ namespace GermanCarNumber
             // pass the font to the font collection
             pfc.AddMemoryFont(data, fontLength);
 
-            label1.Font = new Font(pfc.Families[0], 57);
-            label2.Font = new Font(pfc.Families[0], 57);
-            label3.Font = new Font(pfc.Families[0], 57);
+            regionLabel.Font = new Font(pfc.Families[0], 57);
+            lettersLabel.Font = new Font(pfc.Families[0], 57);
+            numbersLabel.Font = new Font(pfc.Families[0], 57);
         }
         public void InitComboBox()
         {
@@ -57,45 +54,63 @@ namespace GermanCarNumber
         private void GenerateRandomNumber(object sender, EventArgs e)
         {
             string[] labelText = comboBox1.SelectedItem.Equals("None") ?
-                sequenceGenerator.CreateRandomNumber().Split(' ') : 
+                sequenceGenerator.CreateRandomNumber().Split(' ') :
                 sequenceGenerator.CreateRandomNumber(regions[(string)comboBox1.SelectedItem]).Split(' ');
-            label1.Text = labelText[0];
-            label2.Text = labelText[1];
-            label3.Text = labelText[2];
+            regionLabel.Text = labelText[0];
+            lettersLabel.Text = labelText[1];
+            numbersLabel.Text = labelText[2];
+            AddToDB();
+        }
+        private void AddToDB()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source = generator.db;Version=3;"))
+            {
+
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand($"INSERT INTO carNumbers (carNumber) VALUES ('{regionLabel.Text + lettersLabel.Text + numbersLabel.Text}');", connection))
+                {
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
         }
 
-        private void GenerateNextNumber(object sender, EventArgs e)
-        {
-            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
-                sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
-            if (number == null)
+            private void GenerateNextNumber(object sender, EventArgs e)
             {
-                MessageBox.Show("Номер является крайним");
+                string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
+                    sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
+                if (number == null)
+                {
+                    MessageBox.Show("Номер является крайним");
+                }
+                else
+                {
+                    string[] labelText = number.Split(' ');
+                    regionLabel.Text = labelText[0];
+                    lettersLabel.Text = labelText[1];
+                    numbersLabel.Text = labelText[2];
+                }
+            AddToDB();
             }
-            else
-            {
-                string[] labelText = number.Split(' ');
-                label1.Text = labelText[0];
-                label2.Text = labelText[1];
-                label3.Text = labelText[2];
-            }
-        }
 
-        private void GeneratePreviousNumber(object sender, EventArgs e)
-        {
-            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
-                sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
-            if (number == null)
+            private void GeneratePreviousNumber(object sender, EventArgs e)
             {
-                MessageBox.Show("Номер является крайним");
+                string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
+                    sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
+                if (number == null)
+                {
+                    MessageBox.Show("Номер является крайним");
+                }
+                else
+                {
+                    string[] labelText = number.Split(' ');
+                    regionLabel.Text = labelText[0];
+                    lettersLabel.Text = labelText[1];
+                    numbersLabel.Text = labelText[2];
+                AddToDB();
+                }
             }
-            else
-            {
-                string[] labelText = number.Split(' ');
-                label1.Text = labelText[0];
-                label2.Text = labelText[1];
-                label3.Text = labelText[2];
-            }
+
         }
     }
-}
