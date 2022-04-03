@@ -16,10 +16,12 @@ namespace GermanCarNumber
         //Create your private font collection object.
         private PrivateFontCollection pfc = new PrivateFontCollection();
         private SequenceGenerator sequenceGenerator = new SequenceGenerator();
+        private Dictionary<string, string> regions = new Dictionary<string, string>();
         public Form1()
         {
             InitializeComponent();
             InitCustomLabelFont();
+            InitComboBox();
         }
         public void InitCustomLabelFont()
         {
@@ -39,10 +41,24 @@ namespace GermanCarNumber
             label2.Font = new Font(pfc.Families[0], 57);
             label3.Font = new Font(pfc.Families[0], 57);
         }
-
-        private void GenerateAndShowRandomNumber(object sender, EventArgs e)
+        public void InitComboBox()
         {
-            string[] labelText = sequenceGenerator.CreateRandomNumber().Split(' ');
+            comboBox1.Items.Add("None");
+            string[] lines = Properties.Resources.regions.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                int index = lines[i].IndexOf(':');
+                regions[lines[i].Substring(index + 1)] = lines[i].Substring(0, index);
+                comboBox1.Items.Add(lines[i].Substring(index + 1));
+            }
+            comboBox1.SelectedItem = comboBox1.Items[0];
+        }
+
+        private void GenerateRandomNumber(object sender, EventArgs e)
+        {
+            string[] labelText = comboBox1.SelectedItem.Equals("None") ?
+                sequenceGenerator.CreateRandomNumber().Split(' ') : 
+                sequenceGenerator.CreateRandomNumber(regions[(string)comboBox1.SelectedItem]).Split(' ');
             label1.Text = labelText[0];
             label2.Text = labelText[1];
             label3.Text = labelText[2];
@@ -50,10 +66,36 @@ namespace GermanCarNumber
 
         private void GenerateNextNumber(object sender, EventArgs e)
         {
-            string[] labelText = sequenceGenerator.CreateNextNumber().Split(' ');
-            label1.Text = labelText[0];
-            label2.Text = labelText[1];
-            label3.Text = labelText[2];
+            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
+                sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
+            if (number == null)
+            {
+                MessageBox.Show("Номер является крайним");
+            }
+            else
+            {
+                string[] labelText = number.Split(' ');
+                label1.Text = labelText[0];
+                label2.Text = labelText[1];
+                label3.Text = labelText[2];
+            }
+        }
+
+        private void GeneratePreviousNumber(object sender, EventArgs e)
+        {
+            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
+                sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
+            if (number == null)
+            {
+                MessageBox.Show("Номер является крайним");
+            }
+            else
+            {
+                string[] labelText = number.Split(' ');
+                label1.Text = labelText[0];
+                label2.Text = labelText[1];
+                label3.Text = labelText[2];
+            }
         }
     }
 }
