@@ -61,13 +61,26 @@ namespace GermanCarNumber
             numbersLabel.Text = labelText[2];
             AddToDB();
         }
+        private void CheckNumberInDB()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source = generator.db;Version=3;"))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand($"EXISTS(SELECT id FROM carNumbers WHERE name='{regionLabel.Text + lettersLabel.Text + numbersLabel.Text}')"))
+                {
+                    if (false)
+                        MessageBox.Show("номер существует");
+                }
+            }
+        }
         private void AddToDB()
         {
+            CheckNumberInDB();
             using (SQLiteConnection connection = new SQLiteConnection("Data Source = generator.db;Version=3;"))
             {
 
                 connection.Open();
-                using (SQLiteCommand command = new SQLiteCommand($"INSERT INTO carNumbers (carNumber) VALUES ('{regionLabel.Text + lettersLabel.Text + numbersLabel.Text}');", connection))
+                using (SQLiteCommand command = new SQLiteCommand($"INSERT OR IGNORE INTO carNumbers (carNumber) VALUES ('{regionLabel.Text + lettersLabel.Text + numbersLabel.Text}');", connection))
                 {
                     command.ExecuteNonQuery();
 
@@ -76,41 +89,41 @@ namespace GermanCarNumber
             }
         }
 
-            private void GenerateNextNumber(object sender, EventArgs e)
+        private void GenerateNextNumber(object sender, EventArgs e)
+        {
+            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
+                sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
+            if (number == null)
             {
-                string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
-                    sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
-                if (number == null)
-                {
-                    MessageBox.Show("Номер является крайним");
-                }
-                else
-                {
-                    string[] labelText = number.Split(' ');
-                    regionLabel.Text = labelText[0];
-                    lettersLabel.Text = labelText[1];
-                    numbersLabel.Text = labelText[2];
-                }
+                MessageBox.Show("Номер является крайним");
+            }
+            else
+            {
+                string[] labelText = number.Split(' ');
+                regionLabel.Text = labelText[0];
+                lettersLabel.Text = labelText[1];
+                numbersLabel.Text = labelText[2];
+            }
             AddToDB();
-            }
-
-            private void GeneratePreviousNumber(object sender, EventArgs e)
-            {
-                string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
-                    sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
-                if (number == null)
-                {
-                    MessageBox.Show("Номер является крайним");
-                }
-                else
-                {
-                    string[] labelText = number.Split(' ');
-                    regionLabel.Text = labelText[0];
-                    lettersLabel.Text = labelText[1];
-                    numbersLabel.Text = labelText[2];
-                AddToDB();
-                }
-            }
-
         }
+
+        private void GeneratePreviousNumber(object sender, EventArgs e)
+        {
+            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
+                sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
+            if (number == null)
+            {
+                MessageBox.Show("Номер является крайним");
+            }
+            else
+            {
+                string[] labelText = number.Split(' ');
+                regionLabel.Text = labelText[0];
+                lettersLabel.Text = labelText[1];
+                numbersLabel.Text = labelText[2];
+                AddToDB();
+            }
+        }
+
     }
+}
