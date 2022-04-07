@@ -13,11 +13,17 @@ namespace GermanCarNumber
         private PrivateFontCollection pfc = new PrivateFontCollection();
         private SequenceGenerator sequenceGenerator = new SequenceGenerator();
         private Dictionary<string, string> regions = new Dictionary<string, string>();
+        public string region = "Случайный";
         public Form1()
         {
             InitializeComponent();
             InitCustomLabelFont();
-            InitComboBox();
+            string[] lines = Properties.Resources.regions.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                int index = lines[i].IndexOf(':');
+                regions[lines[i].Substring(index + 1)] = lines[i].Substring(0, index);
+            }
         }
 
         public void InitCustomLabelFont()
@@ -38,24 +44,12 @@ namespace GermanCarNumber
             lettersLabel.Font = new Font(pfc.Families[0], 57);
             numbersLabel.Font = new Font(pfc.Families[0], 57);
         }
-        public void InitComboBox()
-        {
-            comboBox1.Items.Add("None");
-            string[] lines = Properties.Resources.regions.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                int index = lines[i].IndexOf(':');
-                regions[lines[i].Substring(index + 1)] = lines[i].Substring(0, index);
-                comboBox1.Items.Add(lines[i].Substring(index + 1));
-            }
-            comboBox1.SelectedItem = comboBox1.Items[0];
-        }
 
         private void GenerateRandomNumber(object sender, EventArgs e)
         {
-            string[] labelText = comboBox1.SelectedItem.Equals("None") ?
+            string[] labelText = region.Equals("Случайный") ?
                 sequenceGenerator.CreateRandomNumber().Split(' ') :
-                sequenceGenerator.CreateRandomNumber(regions[(string)comboBox1.SelectedItem]).Split(' ');
+                sequenceGenerator.CreateRandomNumber(regions[region]).Split(' ');
             regionLabel.Text = labelText[0];
             lettersLabel.Text = labelText[1];
             numbersLabel.Text = labelText[2];
@@ -91,8 +85,8 @@ namespace GermanCarNumber
 
         private void GenerateNextNumber(object sender, EventArgs e)
         {
-            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreateNextNumber() :
-                sequenceGenerator.CreateNextNumber(regions[(string)comboBox1.SelectedItem]);
+            string number = region.Equals("Случайный") ? sequenceGenerator.CreateNextNumber() :
+                sequenceGenerator.CreateNextNumber(regions[region]);
             if (number == null)
             {
                 MessageBox.Show("Номер является крайним");
@@ -109,8 +103,8 @@ namespace GermanCarNumber
 
         private void GeneratePreviousNumber(object sender, EventArgs e)
         {
-            string number = comboBox1.SelectedItem.Equals("None") ? sequenceGenerator.CreatePreviousNumber() :
-                sequenceGenerator.CreatePreviousNumber(regions[(string)comboBox1.SelectedItem]);
+            string number = region.Equals("Случайный") ? sequenceGenerator.CreatePreviousNumber() :
+                sequenceGenerator.CreatePreviousNumber(regions[region]);
             if (number == null)
             {
                 MessageBox.Show("Номер является крайним");
@@ -125,5 +119,10 @@ namespace GermanCarNumber
             }
         }
 
+        private void OpenDialogBox(object sender, EventArgs e)
+        {
+            RegionDialogBox f2 = new RegionDialogBox();
+            f2.ShowDialog(this);
+        }
     }
 }

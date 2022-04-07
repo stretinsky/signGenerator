@@ -13,9 +13,11 @@ namespace GermanCarNumber
         private ushort lettersIndex = 0;
         private List<string> letters = new List<string>();
 
-        private int numbers = 1;
+        private ushort numbers = 1;
 
         private static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private static string[] bannedCombinations = new string[] { "SS", "SA", "RE" };
+
         private List<string> carNumbers = new List<string>();
         private StringBuilder sequence = new StringBuilder("A A 1");
         private Random rand = new Random();
@@ -36,9 +38,10 @@ namespace GermanCarNumber
                     letters.Add(alphabet[i].ToString() + alphabet[j].ToString());
                 }
             }
-            letters.Remove("SS");
-            letters.Remove("SA"); //добавлю список запрещенных комбинаций, и буду нормально это делать
-            letters.Remove("RE");
+            foreach (string bannedCombination in bannedCombinations)
+            {
+                letters.Remove(bannedCombination);
+            }
         }
         public string CreateRandomNumber()
         {
@@ -47,7 +50,7 @@ namespace GermanCarNumber
             lettersIndex = (ushort)rand.Next(letters.Count);
             sequence.Append(regions[regionIndex] + " " + letters[lettersIndex] + " ");
 
-            numbers = sequence.Length.Equals(7) ? rand.Next(1, 1000) : rand.Next(1, 10000);
+            numbers = (ushort)(sequence.Length.Equals(7) ? rand.Next(1, 1000) : rand.Next(1, 10000));
             sequence.Append(numbers);
             if (carNumbers.Contains(sequence.ToString())) return CreateRandomNumber();
             carNumbers.Add(sequence.ToString());
@@ -67,7 +70,7 @@ namespace GermanCarNumber
             lettersIndex = (ushort)rand.Next(letters.Count);
             sequence.Append(regions[regionIndex] + " " + letters[lettersIndex] + " ");
 
-            numbers = sequence.Length.Equals(7) ? rand.Next(1, 1000) : rand.Next(1, 10000);
+            numbers = (ushort)(sequence.Length.Equals(7) ? rand.Next(1, 1000) : rand.Next(1, 10000));
             sequence.Append(numbers);
             if (carNumbers.Contains(sequence.ToString())) return CreateRandomNumber();
             carNumbers.Add(sequence.ToString());
@@ -75,116 +78,163 @@ namespace GermanCarNumber
         }
         public string CreateNextNumber()
         {
-            if (numbers + 1 >= 10000 || numbers + 1 >= 1000 && sequence.Replace(numbers.ToString(), (numbers + 1).ToString()).Length >= 11)
+            ushort nextNumbers = numbers, nLettersIndex = lettersIndex, nRegionIndex = regionIndex;
+            do
             {
-                if (lettersIndex.Equals((ushort)(letters.Count - 1)))
+                if (nextNumbers == 9999 || nextNumbers == 999 && sequence.Length == 10)
                 {
-                    if (regionIndex.Equals(regions.Length - 1)) return null;
-                    numbers = 1;
-                    lettersIndex = 0;
-                    sequence.Clear();
-                    sequence.Append($"{regions[++regionIndex]} {letters[lettersIndex]} {numbers}");
-
-                    if (carNumbers.Contains(sequence.ToString())) return CreateNextNumber();
-                    carNumbers.Add(sequence.ToString());
-                    return sequence.ToString();
+                    if (nLettersIndex == letters.Count - 1)
+                    {
+                        if (nRegionIndex == regions.Length - 1) return null;
+                        nextNumbers = 1;
+                        nLettersIndex = 0;
+                        sequence.Clear();
+                        sequence.Append($"{regions[++nRegionIndex]} {letters[nLettersIndex]} {nextNumbers}");
+                    }
+                    else
+                    {
+                        nextNumbers = 1;
+                        sequence.Clear();
+                        sequence.Append($"{regions[nRegionIndex]} {letters[++nLettersIndex]} {nextNumbers}");
+                    }
                 }
-                numbers = 1;
-                sequence.Clear();
-                sequence.Append($"{regions[regionIndex]} {letters[++lettersIndex]} {numbers}");
-
-                if (carNumbers.Contains(sequence.ToString())) return CreateNextNumber();
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
-            }
-            else
-            {
-                sequence.Replace(numbers.ToString(), (++numbers).ToString());
-
-                if (carNumbers.Contains(sequence.ToString())) return CreateNextNumber();
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
-            }
+                else
+                {
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[nLettersIndex]} {++nextNumbers}");
+                }
+            } while (carNumbers.Contains(sequence.ToString()));
+            numbers = nextNumbers;
+            lettersIndex = nLettersIndex;
+            regionIndex = nRegionIndex;
+            carNumbers.Add(sequence.ToString());
+            return sequence.ToString();
         }
         public string CreateNextNumber(string region)
         {
-            if (numbers + 1 >= 10000 || numbers + 1 >= 1000 && sequence.Replace(numbers.ToString(), (numbers + 1).ToString()).Length >= 11)
+            ushort nextNumbers, nLettersIndex, nRegionIndex;
+            try
             {
-                if (lettersIndex.Equals((ushort)(letters.Count - 1))) return null;
-                numbers = 1;
-                sequence.Clear();
-                sequence.Append($"{regions[regionIndex]} {letters[++lettersIndex]} {numbers}");
-
-                if (carNumbers.Contains(sequence.ToString())) return CreateNextNumber(region);
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
+                nRegionIndex = (ushort)Array.IndexOf(regions, region);
             }
+            catch
+            {
+                return null;
+            }
+            if (nRegionIndex > regionIndex)
+            {
+                nextNumbers = 0;
+                nLettersIndex = 0;
+            }
+            else if (nRegionIndex < regionIndex) return null;
             else
             {
-                sequence.Replace(numbers.ToString(), (++numbers).ToString());
-
-                if (carNumbers.Contains(sequence.ToString())) return CreateNextNumber(region);
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
+                nextNumbers = numbers;
+                nLettersIndex = lettersIndex;
             }
+            do
+            {
+                if (nextNumbers == 9999 || nextNumbers == 999 && sequence.Length == 10)
+                {
+                    if (nLettersIndex == letters.Count - 1) return null;
+                    nextNumbers = 1;
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[++nLettersIndex]} {nextNumbers}");
+                }
+                else
+                {
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[nLettersIndex]} {++nextNumbers}");
+                }
+            } while (carNumbers.Contains(sequence.ToString()));
+            numbers = nextNumbers;
+            lettersIndex = nLettersIndex;
+            regionIndex = nRegionIndex;
+            carNumbers.Add(sequence.ToString());
+            return sequence.ToString();
         }
         public string CreatePreviousNumber()
         {
-            if (numbers - 1 <= 0)
+            ushort nextNumbers = numbers, nLettersIndex = lettersIndex, nRegionIndex = regionIndex;
+            do
             {
-                if (lettersIndex.Equals(0))
+                if (nextNumbers == 1)
                 {
-                    if (regionIndex.Equals(0)) return null;
-                    lettersIndex = (ushort)(letters.Count - 1);
-                    sequence.Clear();
-                    sequence.Append($"{regions[--regionIndex]} {letters[lettersIndex]} ");
-                    numbers = sequence.Length.Equals(7) ? 999 : 9999;
-                    sequence.Append(numbers);
-
-                    if (carNumbers.Contains(sequence.ToString())) return CreatePreviousNumber();
-                    carNumbers.Add(sequence.ToString());
-                    return sequence.ToString();
+                    if (nLettersIndex == 0)
+                    {
+                        if (nRegionIndex == 0) return null;
+                        nLettersIndex = (ushort)(letters.Count - 1);
+                        sequence.Clear();
+                        sequence.Append($"{regions[--nRegionIndex]} {letters[nLettersIndex]} ");
+                        nextNumbers = (ushort)(sequence.Length.Equals(7) ? 999 : 9999);
+                        sequence.Append(nextNumbers);
+                    }
+                    else
+                    {
+                        sequence.Clear();
+                        sequence.Append($"{regions[nRegionIndex]} {letters[--nLettersIndex]} ");
+                        nextNumbers = (ushort)(sequence.Length.Equals(7) ? 999 : 9999);
+                        sequence.Append(nextNumbers);
+                    }
                 }
-                sequence.Clear();
-                sequence.Append($"{regions[regionIndex]} {letters[--lettersIndex]} ");
-                numbers = sequence.Length.Equals(7) ? 999 : 9999;
-                sequence.Append(numbers);
-
-                if (carNumbers.Contains(sequence.ToString())) return CreatePreviousNumber();
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
-            }
-            else
-            {
-                sequence.Replace(numbers.ToString(), (--numbers).ToString());
-
-                if (carNumbers.Contains(sequence.ToString())) return CreatePreviousNumber();
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
-            }
+                else
+                {
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[nLettersIndex]} {--nextNumbers}");
+                }
+            } while (carNumbers.Contains(sequence.ToString()));
+            numbers = nextNumbers;
+            lettersIndex = nLettersIndex;
+            regionIndex = nRegionIndex;
+            carNumbers.Add(sequence.ToString());
+            return sequence.ToString();
         }
         public string CreatePreviousNumber(string region)
         {
-            if (numbers - 1 <= 0)
+            ushort nextNumbers, nLettersIndex, nRegionIndex;
+            try
             {
-                if (lettersIndex.Equals(0)) return null;
-                sequence.Clear();
-                sequence.Append($"{regions[regionIndex]} {letters[--lettersIndex]} ");
-                numbers = sequence.Length.Equals(7) ? 999 : 9999;
-                sequence.Append(numbers);
-
-                if (carNumbers.Contains(sequence.ToString())) return CreatePreviousNumber(region);
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
+                nRegionIndex = (ushort)Array.IndexOf(regions, region);
             }
+            catch
+            {
+                return null;
+            }
+            if (nRegionIndex < regionIndex)
+            {
+                nLettersIndex = (ushort)(letters.Count - 1);
+                sequence.Clear();
+                sequence.Append($"{regions[nRegionIndex]} {letters[nLettersIndex]} ");
+                nextNumbers = (ushort)(sequence.Length.Equals(7) ? 1000 : 10000);
+            }
+            else if (nRegionIndex > regionIndex) return null;
             else
             {
-                sequence.Replace(numbers.ToString(), (--numbers).ToString());
-
-                if (carNumbers.Contains(sequence.ToString())) return CreatePreviousNumber(region);
-                carNumbers.Add(sequence.ToString());
-                return sequence.ToString();
+                nextNumbers = numbers;
+                nLettersIndex = lettersIndex;
             }
+            do
+            {
+                if (nextNumbers == 1)
+                {
+                    if (nLettersIndex == 0) return null;
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[--nLettersIndex]} ");
+                    nextNumbers = (ushort)(sequence.Length.Equals(7) ? 999 : 9999);
+                    sequence.Append(nextNumbers);
+                    
+                }
+                else
+                {
+                    sequence.Clear();
+                    sequence.Append($"{regions[nRegionIndex]} {letters[nLettersIndex]} {--nextNumbers}");
+                }
+            } while (carNumbers.Contains(sequence.ToString()));
+            numbers = nextNumbers;
+            lettersIndex = nLettersIndex;
+            regionIndex = nRegionIndex;
+            carNumbers.Add(sequence.ToString());
+            return sequence.ToString();
         }
         public List<string> GetCarNumbers()
         {
