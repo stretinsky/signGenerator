@@ -27,8 +27,7 @@ namespace GermanCarNumber
             for (int i = 0; i < regions.Length; i++)
             {
                 regions[i] = regions[i].Substring(0, regions[i].IndexOf(':'));
-                regions[i].Replace('Ü', 'ü');//пока не работает
-                regions[i].Replace('Ö', 'ö');
+                regions[i] = regions[i].Replace("Ü", "ü").Replace("Ö", "ö");
             }
             for (int i = 0; i < alphabet.Length; i++)
             {
@@ -72,7 +71,7 @@ namespace GermanCarNumber
 
             numbers = (ushort)(sequence.Length.Equals(7) ? rand.Next(1, 1000) : rand.Next(1, 10000));
             sequence.Append(numbers);
-            if (carNumbers.Contains(sequence.ToString())) return CreateRandomNumber();
+            if (carNumbers.Contains(sequence.ToString())) return CreateRandomNumber(region);
             carNumbers.Add(sequence.ToString());
             return sequence.ToString();
         }

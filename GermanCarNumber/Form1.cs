@@ -22,7 +22,7 @@ namespace GermanCarNumber
             for (int i = 0; i < lines.Length; i++)
             {
                 int index = lines[i].IndexOf(':');
-                regions[lines[i].Substring(index + 1)] = lines[i].Substring(0, index);
+                regions[lines[i].Substring(index + 1)] = lines[i].Substring(0, index).Replace("Ü", "ü").Replace("Ö", "ö");
             }
         }
 
