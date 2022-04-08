@@ -53,6 +53,8 @@ namespace GermanCarNumber
             regionLabel.Text = labelText[0];
             lettersLabel.Text = labelText[1];
             numbersLabel.Text = labelText[2];
+            button2.Enabled = true;
+            button3.Enabled = true;
             AddToDB();
         }
         private void CheckNumberInDB()

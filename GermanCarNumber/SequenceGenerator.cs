@@ -19,7 +19,7 @@ namespace GermanCarNumber
         private static string[] bannedCombinations = new string[] { "SS", "SA", "RE" };
 
         private List<string> carNumbers = new List<string>();
-        private StringBuilder sequence = new StringBuilder("A A 1");
+        private StringBuilder sequence = new StringBuilder();
         private Random rand = new Random();
         public SequenceGenerator()
         {

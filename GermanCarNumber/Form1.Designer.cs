@@ -75,9 +75,8 @@
             this.regionLabel.BackColor = System.Drawing.Color.White;
             this.regionLabel.Location = new System.Drawing.Point(149, 141);
             this.regionLabel.Name = "regionLabel";
-            this.regionLabel.Size = new System.Drawing.Size(12, 17);
+            this.regionLabel.Size = new System.Drawing.Size(0, 16);
             this.regionLabel.TabIndex = 2;
-            this.regionLabel.Text = "A";
             this.regionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.regionLabel.UseCompatibleTextRendering = true;
             // 
@@ -88,9 +87,8 @@
             this.lettersLabel.BackColor = System.Drawing.Color.White;
             this.lettersLabel.Location = new System.Drawing.Point(355, 141);
             this.lettersLabel.Name = "lettersLabel";
-            this.lettersLabel.Size = new System.Drawing.Size(12, 17);
+            this.lettersLabel.Size = new System.Drawing.Size(0, 16);
             this.lettersLabel.TabIndex = 3;
-            this.lettersLabel.Text = "A";
             this.lettersLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lettersLabel.UseCompatibleTextRendering = true;
             // 
@@ -101,15 +99,15 @@
             this.numbersLabel.BackColor = System.Drawing.Color.White;
             this.numbersLabel.Location = new System.Drawing.Point(500, 141);
             this.numbersLabel.Name = "numbersLabel";
-            this.numbersLabel.Size = new System.Drawing.Size(10, 17);
+            this.numbersLabel.Size = new System.Drawing.Size(0, 16);
             this.numbersLabel.TabIndex = 4;
-            this.numbersLabel.Text = "1";
             this.numbersLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.numbersLabel.UseCompatibleTextRendering = true;
             // 
             // button2
             // 
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(597, 308);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(156, 95);
@@ -121,6 +119,7 @@
             // button3
             // 
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button3.Enabled = false;
             this.button3.Location = new System.Drawing.Point(26, 308);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(191, 95);
